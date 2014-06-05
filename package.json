@@ -1,7 +1,7 @@
 {
   "author": "Blade Barringer",
   "name": "haxfred-irc-link-logging",
-  "description": "Baisc actions for Haxfred on various emits",
+  "description": "Component to log links.",
   "version": "0.0.1",
   "repository": {
     "url": "https://github.com/haxiom/haxfred-irc-link-logging"
