@@ -1,0 +1,22 @@
+{
+  "author": "Blade Barringer",
+  "name": "haxfred-irc-legacy-personality",
+  "description": "Baisc actions for Haxfred on various emits",
+  "version": "0.0.1",
+  "repository": {
+    "url": "https://github.com/haxiom/haxfred-irc-link-logging"
+  },
+  "main": "./lib/haxfred-irc-link-logging",
+  "keywords": [
+    "irc",
+    "haxfred"
+  ],
+  "bin": {
+  },
+  "dependencies": {
+    "haxfred-irc": ""
+  },
+  "engines": {
+    "node": "*"
+  }
+}
