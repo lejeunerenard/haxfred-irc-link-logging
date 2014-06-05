@@ -1,4 +1,4 @@
-haxfred-irc-legacy-personality
+haxfred-irc-link-logging
 ==============================
 
-Basic actions for Haxfred on various emits.
+Component to log links.
