@@ -22,7 +22,6 @@ jsdom.env(
                var postMessage = $(el).find('.postMessage').text().match(/^(.*?)(: )(.*)/);
                user = postMessage[1];
                caption = postMessage[3];
-               console.log(postMessage);
             } else {
                user = $(el).find('.postMessage').text();
                caption = '';
