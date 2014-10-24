@@ -6,6 +6,7 @@ var express  = require('express'),
      dialect: 'sqlite',
      storage: 'data.db',
   }),
+  bodyParser = require('body-parser'),
   app        = express();
 
 var port = process.env.PORT || 3000;
@@ -18,7 +19,7 @@ var Link = sequelize.define('link', {
   user: Sequelize.STRING
 });
 
-sequelize.sync({ force: true }).complete(function(err) {
+sequelize.sync().complete(function(err) {
    if (!!err) {
       console.log('An error occurred while creating the table:', err);
    } else {
@@ -26,7 +27,32 @@ sequelize.sync({ force: true }).complete(function(err) {
    }
 });
 
-app.use(restful(sequelize));
+app.use(bodyParser.urlencoded({ extended: false  }));
+
+app.get('/api/links/', function (req, res) {
+   Link.findAll({}).success(function(entries) {
+      entries = entries.map(function(entry) { return entry.values  })
+      res.json(entries);
+   }.bind(this));
+});
+app.get('/api/links/:id', function (req, res) {
+   if ( req.params.id ) {
+      Link.find(req.params.id).success(function(entry) {
+         res.json(entry.values);
+      }.bind(this));
+   } else {
+      Link.findAll({}).success(function(entries) {
+         entries = entries.map(function(entry) { return entry.values  })
+         res.json(entries);
+      }.bind(this));
+   }
+});
+
+app.post('/api/links', function (req, res) {
+   Link.create(req.body).success(function(link) {
+      res.json(link.values)
+   })
+});
 
 var server = app.listen(port, function () {
    var host = server.address().address
