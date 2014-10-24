@@ -1,7 +1,6 @@
 var express  = require('express'),
   Sequelize  = require('sequelize-sqlite').sequelize,
   sqlite     = require('sequelize-sqlite').sqlite,
-  http       = require('http'),
   restful    = require('sequelize-restful'),
   sequelize  = new Sequelize('linkLogs','seanz','', {
      dialect: 'sqlite',
