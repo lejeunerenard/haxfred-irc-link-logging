@@ -17,14 +17,14 @@
     "haxfred-irc": "",
     "sequelize": "^2.0.0-rc2",
     "sequelize-restful": "^0.3.0",
-    "sequelize-sqlite": "^1.7.0"
+    "sequelize-sqlite": "^1.7.0",
+    "request": "^2.46.0"
   },
   "engines": {
     "node": "*"
   },
   "devDependencies": {
     "jquery": "^2.1.1",
-    "jsdom": "^1.0.3",
-    "request": "^2.46.0"
+    "jsdom": "^1.0.3"
   }
 }
