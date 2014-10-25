@@ -1,7 +1,6 @@
 var express  = require('express'),
   Sequelize  = require('sequelize-sqlite').sequelize,
   sqlite     = require('sequelize-sqlite').sqlite,
-  restful    = require('sequelize-restful'),
   sequelize  = new Sequelize('linkLogs','seanz','', {
      dialect: 'sqlite',
      storage: 'data.db',
@@ -33,14 +32,17 @@ function parseReq(req, model) {
    var query = {};
    // Loop through all the parameters in the request's query
    for ( param in req.query ) {
-      console.log("match: " + param.match(/^_/));
       // Non where parameters start with _
       if ( param.match(/^_/) ) {
          switch ( param ) {
             case "_limit":
                query.limit = req.query._limit;
+               break;
             case "_offset":
                query.offset = req.query._offset;
+               break;
+            case "_order":
+               query.order = req.query._order;
                break;
          }
       // Check model or throw error.
