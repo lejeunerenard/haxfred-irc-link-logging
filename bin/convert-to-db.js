@@ -14,10 +14,8 @@ jsdom.env(
 
          var $ = require('jquery')(window);
 
-         function post_article(el) {
-            var href = $( el ).find('.article').attr('href'),
-                user;
-
+         function get_user_n_caption(el) {
+            var user;
             if ( $(el).find('.postMessage').text().match(/:/) ) {
                var postMessage = $(el).find('.postMessage').text().match(/^(.*?)(: )(.*)/);
                user = postMessage[1];
@@ -27,11 +25,70 @@ jsdom.env(
                caption = '';
             }
 
+            return {
+               user: user,
+               caption: caption
+            };
+         }
+         function post_image(el) {
+            var href = $( el ).find('img').attr('src');
+
+            var info = get_user_n_caption(el);
+
             post_link({
                url: href,
-               user: user,
-               caption: caption 
+               type: 'article',
+               user: info.user,
+               caption: info.caption 
             })
+         }
+         function post_article(el) {
+            var href = $( el ).find('.article').attr('href');
+
+            var info = get_user_n_caption(el);
+
+            post_link({
+               url: href,
+               type: 'image',
+               user: info.user,
+               caption: info.caption 
+            })
+         }
+         function post_youtube(el) {
+            var href = $( el ).find('iframe').attr('src');
+            var partialLink;
+            if(href.indexOf("embed/?list=") > -1) {
+               var matches = href.match(/=(.+)$/);
+               partialLink = matches[1];
+            } else {
+               var matches = href.match(/embed\/(.+)$/);
+               if ( !!matches ) {
+                  partialLink = matches[1];
+               }
+            }
+
+            var info = get_user_n_caption(el);
+
+            post_link({
+               url: partialLink,
+               type: 'youtube',
+               user: info.user,
+               caption: info.caption 
+            });
+         }
+         function post_vimeo(el) {
+            var href = $( el ).find('iframe').attr('src');
+            var matches = href.match(/\/(\d+)\?/);
+            var partialLink = matches[1];
+
+            var info = get_user_n_caption(el);
+
+            post_link({
+               url: partialLink,
+               type: 'vimeo',
+               user: info.user,
+               caption: info.caption 
+            });
          }
          function post_link(data) {
             console.log('Creating: ' + data.url);
@@ -49,6 +106,17 @@ jsdom.env(
          }
          $.each($('.irc-link'), function(i, el) {
             if ( $( el ).find('.article').length > 0 ) {
+               post_article(el);
+            } else if ( $( el ).find('iframe').length > 0 && $( el ).find('iframe').attr('src').match(/youtube/gi) ) {
+               console.log("YOutube");
+               post_youtube(el);
+            } else if ( $( el ).find('iframe').length > 0 && $( el ).find('iframe').attr('src').match(/vimeo/gi) ) {
+               console.log("VIMEO");
+               post_vimeo(el);
+            } else if ( $( el ).find('img').length > 0 ) {
+               console.log("IMAGE");
+               post_image(el);
+            } else {
                post_article(el);
             }
          });
