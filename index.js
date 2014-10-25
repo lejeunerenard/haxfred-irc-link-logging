@@ -29,23 +29,51 @@ sequelize.sync().complete(function(err) {
 
 app.use(bodyParser.urlencoded({ extended: false  }));
 
+function parseReq(req, model) {
+   var query = {};
+   // Loop through all the parameters in the request's query
+   for ( param in req.query ) {
+      console.log("match: " + param.match(/^_/));
+      // Non where parameters start with _
+      if ( param.match(/^_/) ) {
+         switch ( param ) {
+            case "_limit":
+               query.limit = req.query._limit;
+            case "_offset":
+               query.offset = req.query._offset;
+               break;
+         }
+      // Check model or throw error.
+      //} else if ( !!model ) {
+      //   query.where = query.where || {};
+      //   query.where[param] = req.query[param];
+      // Try it anyways ;)
+      } else {
+         query.where = query.where || {};
+         query.where[param] = req.query[param];
+      }
+   }
+   return query;
+}
+
 app.get('/api/links/', function (req, res) {
-   Link.findAll({}).success(function(entries) {
+   var query = parseReq(req, Link);
+   Link.findAll(query).success(function(entries) {
       entries = entries.map(function(entry) { return entry.values  })
       res.json(entries);
-   }.bind(this));
+   }.bind(this))
+   // @TODO Better Error response
+   .error(function(error) {
+      res.json({
+         status: "error",
+         error: error
+      });
+   });
 });
 app.get('/api/links/:id', function (req, res) {
-   if ( req.params.id ) {
-      Link.find(req.params.id).success(function(entry) {
-         res.json(entry.values);
-      }.bind(this));
-   } else {
-      Link.findAll({}).success(function(entries) {
-         entries = entries.map(function(entry) { return entry.values  })
-         res.json(entries);
-      }.bind(this));
-   }
+   Link.find(req.params.id).success(function(entry) {
+      res.json(entry.values);
+   }.bind(this));
 });
 
 app.post('/api/links', function (req, res) {
