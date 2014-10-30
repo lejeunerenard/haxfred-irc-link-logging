@@ -1,5 +1,6 @@
 var express  = require('express'),
   Sequelize  = require('sequelize-sqlite').sequelize,
+  cors       = require('cors'),
   sqlite     = require('sequelize-sqlite').sqlite,
   sequelize  = new Sequelize('linkLogs','seanz','', {
      dialect: 'sqlite',
@@ -26,6 +27,7 @@ sequelize.sync().complete(function(err) {
    }
 });
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false  }));
 
 function parseReq(req, model) {
@@ -72,6 +74,7 @@ app.get('/api/links/', function (req, res) {
       });
    });
 });
+
 app.get('/api/links/:id', function (req, res) {
    Link.find(req.params.id).success(function(entry) {
       res.json(entry.values);
