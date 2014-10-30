@@ -37,7 +37,7 @@ jsdom.env(
 
             post_link({
                url: href,
-               type: 'article',
+               type: 'image',
                user: info.user,
                caption: info.caption 
             })
@@ -49,7 +49,7 @@ jsdom.env(
 
             post_link({
                url: href,
-               type: 'image',
+               type: 'article',
                user: info.user,
                caption: info.caption 
             })
@@ -104,7 +104,7 @@ jsdom.env(
                }
             );
          }
-         $.each($('.irc-link'), function(i, el) {
+         $.each($('.irc-link').get().reverse(), function(i, el) {
             if ( $( el ).find('.article').length > 0 ) {
                post_article(el);
             } else if ( $( el ).find('iframe').length > 0 && $( el ).find('iframe').attr('src').match(/youtube/gi) ) {
