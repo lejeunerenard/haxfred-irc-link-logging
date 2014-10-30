@@ -13,6 +13,7 @@
   ],
   "bin": {},
   "dependencies": {
+    "body-parser": "",
     "express": "^4.9.8",
     "haxfred-irc": "haxiom/haxfred-irc",
     "sequelize": "^2.0.0-rc2",
