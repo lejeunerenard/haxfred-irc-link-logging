@@ -18,6 +18,7 @@ jsdom.env(
             var user,
                 caption,
                 postDate = get_created_date(el);
+                console.log(postDate);
             if ( $(el).find('.postMessage').text().match(/:/) ) {
                var postMessage = $(el).find('.postMessage').text().match(/^(.*?)(: )(.*)/);
                user = postMessage[1];
@@ -34,18 +35,17 @@ jsdom.env(
             };
          }
          function get_created_date(el) {
-           var postDate = $(el).find('.when').text().match(/^(.*?)(Posted on )(.*)( at )(.*)/);
-           var calDate = postDate[3].split("/");
-           var timeDate = postDate[5].match(/(.*?)(:)(.*)/);
+           var rawDate = $(el).find('.when').text();
+           var calDate = rawDate.match(/(\d+\/){2}\d{4}/)[0].split("/");
+           var timeDate = rawDate.match(/(\d{1,2})(:)(\d{2})([ap]m)/);
 
-           if(timeDate[3].substring(2,4) == 'pm') {
+           if(timeDate[5] == 'pm') {
              timeDate[1] = parseInt(timeDate[1]) + 12;
            } else if(timeDate[1] == 12) {
              timeDate[1] = 0;
            }
-           timeDate[3] = timeDate[3].substring(0,2);
 
-           return new Date(calDate[2], calDate[0], calDate[1], timeDate[1], timeDate[3]);;
+           return new Date(calDate[2], calDate[0] - 1, calDate[1], timeDate[1], timeDate[3]);
          }
          function post_image(el) {
             var href = $( el ).find('img').attr('src');
