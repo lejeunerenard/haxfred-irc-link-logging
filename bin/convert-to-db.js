@@ -57,7 +57,7 @@ jsdom.env(
                type: 'image',
                user: info.user,
                caption: info.caption, 
-               createdat: info.createdat
+               createdAt: info.createdAt
             })
          }
          function post_article(el) {
@@ -70,7 +70,7 @@ jsdom.env(
                type: 'article',
                user: info.user,
                caption: info.caption,
-               createdat: info.createdat
+               createdAt: info.createdAt
             })
          }
          function post_youtube(el) {
