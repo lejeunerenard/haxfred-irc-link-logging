@@ -133,7 +133,7 @@ jsdom.env(
             if ( $( el ).find('.article').length > 0 ) {
                post_article(el);
             } else if ( $( el ).find('iframe').length > 0 && $( el ).find('iframe').attr('src').match(/youtube/gi) ) {
-               console.log("YOutube");
+               console.log("YOUTUBE");
                post_youtube(el);
             } else if ( $( el ).find('iframe').length > 0 && $( el ).find('iframe').attr('src').match(/vimeo/gi) ) {
                console.log("VIMEO");
