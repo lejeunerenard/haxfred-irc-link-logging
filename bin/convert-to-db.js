@@ -37,15 +37,16 @@ jsdom.env(
          function get_created_date(el) {
            var rawDate = $(el).find('.when').text();
            var calDate = rawDate.match(/(\d+\/){2}\d{4}/)[0].split("/");
-           var timeDate = rawDate.match(/(\d{1,2})(:)(\d{2})([ap]m)/);
+           var timeDate = rawDate.match(/(\d{1,2}):(\d{2})([ap]m)/);
+           console.log(timeDate)
 
-           if(timeDate[5] == 'pm') {
+           if(timeDate[3] == 'pm') {
              timeDate[1] = parseInt(timeDate[1]) + 12;
            } else if(timeDate[1] == 12) {
              timeDate[1] = 0;
            }
 
-           return new Date(calDate[2], calDate[0] - 1, calDate[1], timeDate[1], timeDate[3]);
+           return new Date(calDate[2], calDate[0] - 1, calDate[1], timeDate[1], timeDate[2]);
          }
          function post_image(el) {
             var href = $( el ).find('img').attr('src');
