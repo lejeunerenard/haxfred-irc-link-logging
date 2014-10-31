@@ -67,6 +67,10 @@ jsdom.env(
                }
             }
 
+            if(partialLink) {
+              partialLink = "http://youtu.be/" + partialLink
+            }
+
             var info = get_user_n_caption(el);
 
             post_link({
@@ -79,7 +83,7 @@ jsdom.env(
          function post_vimeo(el) {
             var href = $( el ).find('iframe').attr('src');
             var matches = href.match(/\/(\d+)\?/);
-            var partialLink = matches[1];
+            var partialLink = "https://vimeo.com/" + matches[1];
 
             var info = get_user_n_caption(el);
 
