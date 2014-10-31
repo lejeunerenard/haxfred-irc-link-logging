@@ -14,8 +14,10 @@ jsdom.env(
 
          var $ = require('jquery')(window);
 
-         function get_user_n_caption(el) {
-            var user;
+         function get_user_n_caption_n_created_date(el) {
+            var user,
+                caption,
+                createdAt = get_created_date(el);
             if ( $(el).find('.postMessage').text().match(/:/) ) {
                var postMessage = $(el).find('.postMessage').text().match(/^(.*?)(: )(.*)/);
                user = postMessage[1];
@@ -27,31 +29,48 @@ jsdom.env(
 
             return {
                user: user,
-               caption: caption
+               caption: caption,
+               createdAt: createdAt
             };
+         }
+         function get_created_date(el) {
+           var postDate = $(el).find('.when').text().match(/^(.*?)(Posted on )(.*)( at )(.*)/);
+           var calDate = postDate[3].split("/");
+           var timeDate = postDate[5].match(/(.*?)(:)(.*)/);
+
+           if(timeDate[3].substring(2,4) == 'pm') {
+             timeDate[1] = parseInt(timeDate[1]) + 12;
+           } else if(timeDate[1] == 12) {
+             timeDate[1] = 0;
+           }
+           timeDate[3] = timeDate[3].substring(0,2);
+
+           return new Date(calDate[2], calDate[0], calDate[1], timeDate[1], timeDate[3]);;
          }
          function post_image(el) {
             var href = $( el ).find('img').attr('src');
 
-            var info = get_user_n_caption(el);
+            var info = get_user_n_caption_n_created_date(el);
 
             post_link({
                url: href,
                type: 'image',
                user: info.user,
-               caption: info.caption 
+               caption: info.caption, 
+               createdat: info.createdat
             })
          }
          function post_article(el) {
             var href = $( el ).find('.article').attr('href');
 
-            var info = get_user_n_caption(el);
+            var info = get_user_n_caption_n_created_date(el);
 
             post_link({
                url: href,
                type: 'article',
                user: info.user,
-               caption: info.caption 
+               caption: info.caption,
+               createdat: info.createdat
             })
          }
          function post_youtube(el) {
@@ -71,13 +90,14 @@ jsdom.env(
               partialLink = "http://youtu.be/" + partialLink
             }
 
-            var info = get_user_n_caption(el);
+            var info = get_user_n_caption_n_created_date(el);
 
             post_link({
                url: partialLink,
                type: 'youtube',
                user: info.user,
-               caption: info.caption 
+               caption: info.caption,
+               createdAt: info.createdAt
             });
          }
          function post_vimeo(el) {
@@ -85,13 +105,14 @@ jsdom.env(
             var matches = href.match(/\/(\d+)\?/);
             var partialLink = "https://vimeo.com/" + matches[1];
 
-            var info = get_user_n_caption(el);
+            var info = get_user_n_caption_n_created_date(el);
 
             post_link({
                url: partialLink,
                type: 'vimeo',
                user: info.user,
-               caption: info.caption 
+               caption: info.caption,
+               createdAt: info.createdAt
             });
          }
          function post_link(data) {
