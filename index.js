@@ -16,7 +16,8 @@ var Link = sequelize.define('link', {
   url: Sequelize.STRING,
   type: Sequelize.ENUM('image', 'youtube', 'vimeo', 'article'),
   caption: Sequelize.STRING,
-  user: Sequelize.STRING
+  user: Sequelize.STRING,
+  postDate: Sequelize.DATE
 });
 
 sequelize.sync().complete(function(err) {

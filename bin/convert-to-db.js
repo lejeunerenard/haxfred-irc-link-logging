@@ -17,7 +17,7 @@ jsdom.env(
          function get_user_n_caption_n_created_date(el) {
             var user,
                 caption,
-                createdAt = get_created_date(el);
+                postDate = get_created_date(el);
             if ( $(el).find('.postMessage').text().match(/:/) ) {
                var postMessage = $(el).find('.postMessage').text().match(/^(.*?)(: )(.*)/);
                user = postMessage[1];
@@ -30,7 +30,7 @@ jsdom.env(
             return {
                user: user,
                caption: caption,
-               createdAt: createdAt
+               postDate: postDate
             };
          }
          function get_created_date(el) {
@@ -56,8 +56,7 @@ jsdom.env(
                url: href,
                type: 'image',
                user: info.user,
-               caption: info.caption, 
-               createdAt: info.createdAt
+               caption: info.caption 
             })
          }
          function post_article(el) {
@@ -70,7 +69,7 @@ jsdom.env(
                type: 'article',
                user: info.user,
                caption: info.caption,
-               createdAt: info.createdAt
+               postDate: info.postDate
             })
          }
          function post_youtube(el) {
@@ -97,7 +96,7 @@ jsdom.env(
                type: 'youtube',
                user: info.user,
                caption: info.caption,
-               createdAt: info.createdAt
+               postDate: info.postDate
             });
          }
          function post_vimeo(el) {
@@ -112,7 +111,7 @@ jsdom.env(
                type: 'vimeo',
                user: info.user,
                caption: info.caption,
-               createdAt: info.createdAt
+               postDate: info.postDate
             });
          }
          function post_link(data) {
