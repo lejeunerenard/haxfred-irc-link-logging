@@ -55,7 +55,8 @@ jsdom.env(
                url: href,
                type: 'image',
                user: info.user,
-               caption: info.caption 
+               caption: info.caption,
+               postDate: info.postDate
             })
          }
          function post_article(el) {
